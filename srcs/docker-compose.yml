@@ -1,6 +1,44 @@
-name: inception
+version: "3.8"
 
 services:
-	mariadb:
-	nginx:
-	wordpress:
+  nginx:
+    build: ./requirements/nginx
+    image: nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - wordpress
+    volumes:
+      - ./srcs/requirements/nginx/conf/default.conf
+
+  wordpress:
+    build: ./srcs/requirements/wordpress
+    image: wordpress
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: '${MYSQL_DATABASE}'
+      WORDPRESS_DB_USER: '${MYSQL_USER}'
+      WORDPRESS_DB_PASSWORD: '${MYSQL_PASSWORD}'
+    ports:
+      - "8080"
+
+  mariadb:
+    build: ./srcs/requirements/mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+      MYSQL_DATABASE: '${MYSQL_DATABASE}'
+      MYSQL_USER: '${MYSQL_USER}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+    ports:
+      - "3306"
+    volumes:
+    - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
