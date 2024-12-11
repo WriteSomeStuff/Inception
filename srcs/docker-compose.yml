@@ -6,7 +6,7 @@ services:
     image: nginx
     restart: always
     ports:
-      - "80:80"
+      - "80:443"
     depends_on:
       - wordpress
     volumes:
@@ -24,7 +24,7 @@ services:
       WORDPRESS_DB_USER: '${MYSQL_USER}'
       WORDPRESS_DB_PASSWORD: '${MYSQL_PASSWORD}'
     ports:
-      - "8080"
+      - "9000"
 
   mariadb:
     build: ./srcs/requirements/mariadb
