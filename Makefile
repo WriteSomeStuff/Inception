@@ -1,29 +1,19 @@
 # has to build the Docker images using docker-compose.yml
 
-NAME= docker
-CC= c++
-CFLAGS= -Wall -Werror -Wextra -std=c++11
-SRCS= ?
+NAME= inception
 
-OBJS= ${SRCS:%.cpp=%.o}
+all: re
 
-all: ${NAME}
+down:
+	docker-compose -f srcs/docker-compose.yml down
 
-${NAME}: ${OBJS}
-	${CC} ${OBJS} ${CFLAGS} -o ${NAME}
+prune:
+	docker system prune -a -f
 
-%.o : %.cpp
-	$(CC) $(CFLAGS) -c -o $@ $^
+re: prune
+	docker-compose -f srcs/docker-compose.yml up
 
-clean:
-	@rm -rf ${OBJS}
+status:
+	docker-compose -f srcs/docker-compose.yml ps
 
-fclean: clean
-	@rm -f ${NAME}
-
-re: fclean all
-
-debug: CFLAGS += -g -fsanitize=address
-debug: re
-
-.PHONY: all clean fclean re debug
+.PHONY: all prune stop re status
