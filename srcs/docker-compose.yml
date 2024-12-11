@@ -10,7 +10,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - ./srcs/requirements/nginx/conf/default.conf
+      - ./nginx:/etc/nginx
 
   wordpress:
     build: ./srcs/requirements/wordpress
