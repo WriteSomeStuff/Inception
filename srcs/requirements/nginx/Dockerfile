@@ -9,13 +9,8 @@ RUN apt-get -y update && \
 
 RUN openssl req -x509 -nodes \
 	-subj "/C=NL/ST=Noord-Holland/L=Amsterdam/O=Chey/OU=Unit1/CN=cschabra.42.fr/UID=cschabra" \ 
-	-out /etc/nginx/ssl/inception.crt \
-	-keyout /etc/nginx/ssl/inception.key
-
-RUN chmod 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod 777 /etc/nginx/ssl/ 
-RUN chown -R www-data:www-data /etc/nginx/ssl/
+	-out /etc/nginx/ssl/new.crt \
+	-keyout /etc/nginx/ssl/new.key
 
 COPY ./conf/nginx.conf /etc/nginx/sites-enabled/nginx.conf
 COPY ./tools/index.html /etc/nginx/tools/index.html
