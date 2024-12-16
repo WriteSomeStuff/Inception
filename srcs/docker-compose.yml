@@ -1,40 +1,53 @@
+networks:
+  inception:
+    driver: "bridge"
+
 services:
   nginx:
     build: ./requirements/nginx
-    image: nginx
+    container_name: nginx
     restart: always
     ports:
       - "443:443"
     depends_on:
       - wordpress
+    volumes:
+      - ./requirements/nginx/conf:/etc/nginx/http.d/
+      - wp-volume:/var/www/
+    networks:
+      - inception
 
   wordpress:
-    build: ./srcs/requirements/wordpress
-    image: wordpress
+    build: ./requirements/wordpress
+    container_name: wordpress
     restart: always
-    depends_on:
-      - mariadb
     environment:
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: '${MYSQL_DATABASE}'
-      WORDPRESS_DB_USER: '${MYSQL_USER}'
-      WORDPRESS_DB_PASSWORD: '${MYSQL_PASSWORD}'
+      DB_NAME: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "9000"
+    depends_on:
+      - mariadb
+    volumes:
+      - wp-volume:/var/www/
+    networks:
+      - inception
 
   mariadb:
-    build: ./srcs/requirements/mariadb
-    image: mariadb
+    build: ./requirements/mariadb
+    container_name: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
-      MYSQL_DATABASE: '${MYSQL_DATABASE}'
-      MYSQL_USER: '${MYSQL_USER}'
-      MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+      DB_NAME: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      DB_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306"
     volumes:
-    - mysql-data:/var/lib/mysql
+    - db-volume:/var/lib/mysql
 
 volumes:
-  mysql-data:
+  wp-data:
+  db-data:
