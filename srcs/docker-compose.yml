@@ -22,7 +22,7 @@ services:
     container_name: wordpress
     restart: always
     environment:
-      DB_NAME: ${DB_DATABASE}
+      DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
     ports:
@@ -39,7 +39,7 @@ services:
     container_name: mariadb
     restart: always
     environment:
-      DB_NAME: ${DB_DATABASE}
+      DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       DB_PASSWORD: ${DB_PASSWORD}
