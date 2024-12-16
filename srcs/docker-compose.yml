@@ -49,5 +49,5 @@ services:
     - db-volume:/var/lib/mysql
 
 volumes:
-  wp-data:
-  db-data:
+  wp-volume:
+  db-volume:
