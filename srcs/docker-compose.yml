@@ -21,11 +21,9 @@ services:
     build: ./requirements/wordpress
     container_name: wordpress
     restart: always
-    environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-    ports:
+    env_file:
+      - .env
+    expose:
       - "9000"
     depends_on:
       - mariadb
@@ -38,12 +36,9 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     restart: always
-    environment:
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      DB_PASSWORD: ${DB_PASSWORD}
-    ports:
+    env_file:
+      - .env
+    expose:
       - "3306"
     volumes:
     - db-volume:/var/lib/mysql
