@@ -32,4 +32,4 @@ fi
 
 echo "MariaDB completed successfully."
 
-exec "$@"
+exec mysqld --user=mysql --console

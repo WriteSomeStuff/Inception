@@ -6,8 +6,8 @@ RUN apt-get -y update && \
 
 COPY ./tools/script.sh /etc/mariadb/tools/script.sh
 # COPY ./conf/mdb.cnf /etc/mysql/mariadb.conf.d/mdb.cnf
-ENTRYPOINT [ "sh", "/etc/mariadb/tools/script.sh" ]
 
 EXPOSE 3306
 
-CMD [ "mysql" ]
+# CMD [ "mysql" ]
+ENTRYPOINT [ "sh", "/etc/mariadb/tools/script.sh" ]
