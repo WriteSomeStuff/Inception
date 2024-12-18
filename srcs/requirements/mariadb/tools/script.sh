@@ -1,12 +1,12 @@
 #!/bin/bash
 
 echo "Starting MariaDB service..."
-systemctl mariadb start
+service mariadb start
 
 sleep 3
 
 echo "Running MariaDB commands..."
-mysql -u "$DB_USER" <<EOF
+mysql -u root --password="$DB_ROOT_PASSWORD" <<EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASSWORD';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
@@ -21,7 +21,7 @@ else
 fi
 
 echo "Stopping MariaDB service..."
-systemctl mariadb stop
+service mariadb stop
 
 if [ $? -eq 0 ]; then
     echo "MariaDB service stopped successfully."
@@ -30,6 +30,6 @@ else
     exit 1
 fi
 
-echo "MariaDB" completed successfully."
+echo "MariaDB completed successfully."
 
 exec "$@"
