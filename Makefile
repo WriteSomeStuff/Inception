@@ -9,10 +9,10 @@ down:
 	docker compose -f srcs/docker-compose.yml down
 
 prune:
-	docker system prune -a -f
+	docker builder prune -f && docker system prune -a -f
 
 re: prune
-	docker compose -f srcs/docker-compose.yml up
+	docker compose -f srcs/docker-compose.yml up --build --no-cache
 
 status:
 	docker compose -f srcs/docker-compose.yml ps
