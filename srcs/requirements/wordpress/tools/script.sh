@@ -21,3 +21,14 @@ else
     exit 1
 fi
 
+mkdir wordpress
+
+wp core download --path=./wordpress/ --locale=en_GB
+
+if [ $? -eq 0 ]; then
+    echo "Wordpress installed successfully."
+else
+    echo "Error installing Wordpress!" >&2
+    exit 1
+fi
+
