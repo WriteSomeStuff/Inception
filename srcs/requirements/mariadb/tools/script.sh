@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Starting MariaDB service..."
+echo "Starting MariaDB..."
 service mariadb start
 
 sleep 3
@@ -16,17 +16,17 @@ EOF
 if [ $? -eq 0 ]; then
     echo "MariaDB commands executed successfully."
 else
-    echo "Error executing MariaDB commands!" >&2
+    echo "Error running MariaDB commands!" >&2
     exit 1
 fi
 
-echo "Stopping MariaDB service..."
+echo "Stopping MariaDB..."
 service mariadb stop
 
 if [ $? -eq 0 ]; then
-    echo "MariaDB service stopped successfully."
+    echo "MariaDB stopped successfully."
 else
-    echo "Failed to stop MariaDB service!" >&2
+    echo "Failed to stop MariaDB!" >&2
     exit 1
 fi
 
