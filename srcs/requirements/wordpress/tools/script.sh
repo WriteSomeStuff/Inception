@@ -26,6 +26,9 @@ else
     exit 1
 fi
 
+mkdir -p /run/php
+chown www-data:www-data /run/php
+
 if [ -f ./wp-config.php ]; then
     echo "Wp already downloaded."
 else
