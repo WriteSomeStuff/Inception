@@ -5,9 +5,8 @@ RUN apt-get -y update && \
 	apt-get -y install mariadb-server mariadb-client
 
 COPY ./tools/script.sh /etc/mariadb/tools/script.sh
-# COPY ./conf/mdb.cnf /etc/mysql/mariadb.conf.d/mdb.cnf
+COPY ./conf/mdb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 EXPOSE 3306
 
-# CMD [ "mysql" ]
 ENTRYPOINT [ "sh", "/etc/mariadb/tools/script.sh" ]

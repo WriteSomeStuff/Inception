@@ -12,7 +12,7 @@ prune:
 	docker builder prune -f && docker system prune -a -f
 
 re: prune
-	docker compose -f srcs/docker-compose.yml up --build --no-cache
+	docker compose -f srcs/docker-compose.yml up
 
 status:
 	docker compose -f srcs/docker-compose.yml ps

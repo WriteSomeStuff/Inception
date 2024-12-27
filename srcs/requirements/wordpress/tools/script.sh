@@ -1,3 +1,8 @@
+while ! mysql -h "mariadb" -u $DB_USER --password="$DB_PASSWORD" -D $DB_NAME; do
+    echo "Waiting for MariaDB to be ready." && sleep 5
+done
+echo "MariaDB is ready."
+
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 
 php wp-cli.phar --info
@@ -21,14 +26,20 @@ else
     exit 1
 fi
 
-mkdir wordpress
-
-wp core download --path=./wordpress/ --locale=en_GB
-
-if [ $? -eq 0 ]; then
-    echo "Wordpress installed successfully."
+if [ -f ./wp-config.php ]; then
+    echo "Wp already downloaded."
 else
-    echo "Error installing Wordpress!" >&2
-    exit 1
+    wp core download --allow-root --locale=en_GB
+    wp core config --allow-root --dbhostname=mariadb --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
+    wp core install --allow-root --url=$DOMAIN_NAME --title=$DB_NAME --admin_user=$DB_ADMIN --admin_password=$DB_ADMIN_PASSWORD --admin_email=$DB_ADMIN_EMAIL
+    wp user create --allow-root $DB_USER $DB_USER_EMAIL --user_pass= $DB_PASSWORD
+
+    if [ $? -eq 0 ]; then
+        echo "Wordpress installed successfully."
+    else
+        echo "Error installing Wordpress!" >&2
+        exit 1
+    fi
 fi
 
+exec "$@"
