@@ -33,7 +33,7 @@ services:
   mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
-    restart: always
+    restart: on-failure
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s

@@ -18,6 +18,16 @@ else
     exit 1
 fi
 
+echo "Stopping MariaDB..."
+service mariadb stop
+
+if [ $? -eq 0 ]; then
+    echo "MariaDB stopped successfully."
+else
+    echo "Failed to stop MariaDB!" >&2
+    exit 1
+fi
+
 echo "MariaDB completed successfully."
 
-exec mysqld
+exec mysqld --user=mysql --console
