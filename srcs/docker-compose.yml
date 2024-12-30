@@ -23,7 +23,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     volumes:
       - wp-volume:/var/www/html
     networks:
@@ -33,6 +34,10 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     env_file:
       - .env
     volumes:

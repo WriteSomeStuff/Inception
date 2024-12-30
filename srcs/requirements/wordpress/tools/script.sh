@@ -46,7 +46,7 @@ else
         exit 1
     fi
 
-    wp core install --allow-root --skip-email --url=$DOMAIN_NAME --title=$DB_NAME --admin_user=$DB_ADMIN --admin_password=$DB_ADMIN_PASSWORD --admin_email="skipthis@test.com"
+    wp core install --allow-root --skip-email --url="https://cschabra.42.fr/" --title=$DB_NAME --admin_user=$DB_ADMIN --admin_password=$DB_ADMIN_PASSWORD --admin_email="skipthis@test.com"
     wp user create --allow-root $DB_USER "skipthis2@test.com" --user_pass=$DB_PASSWORD
 fi
 
