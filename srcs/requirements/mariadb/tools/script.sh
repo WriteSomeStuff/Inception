@@ -3,8 +3,6 @@
 echo "Starting MariaDB..."
 service mariadb start
 
-sleep 3
-
 echo "Running MariaDB commands..."
 mysql -u root --password="$DB_ROOT_PASSWORD" <<EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
@@ -20,16 +18,6 @@ else
     exit 1
 fi
 
-echo "Stopping MariaDB..."
-service mariadb stop
-
-if [ $? -eq 0 ]; then
-    echo "MariaDB stopped successfully."
-else
-    echo "Failed to stop MariaDB!" >&2
-    exit 1
-fi
-
 echo "MariaDB completed successfully."
 
-exec mysqld --user=mysql --console
+exec mysqld

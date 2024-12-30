@@ -4,6 +4,7 @@ done
 echo "MariaDB is ready."
 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
 
 php wp-cli.phar --info
 
@@ -14,7 +15,6 @@ else
     exit 1
 fi
 
-chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 wp --info
@@ -29,22 +29,29 @@ fi
 mkdir -p /run/php
 chown www-data:www-data /run/php
 
-if [ -f ./wp-config.php ]; then
+if [ -f ./wp-login.php ]; then
     echo "Wp already downloaded."
 else
     wp core download --allow-root --locale=en_GB
-    wp core config --allow-root --dbhost=mariadb --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
-    wp core install --allow-root --url=$DOMAIN_NAME --title=$DB_NAME --admin_user=$DB_ADMIN --admin_password=$DB_ADMIN_PASSWORD --admin_email=$DB_ADMIN_EMAIL
-    wp user create --allow-root $DB_USER $DB_USER_EMAIL --user_pass=$DB_PASSWORD
-
-    if [ $? -eq 0 ]; then
-        echo "Wordpress installed successfully."
-    else
-        echo "Error installing Wordpress!" >&2
-        exit 1
-    fi
 fi
 
-sed -i 's/listen = \/run\/php\/php7.4-fpm.sock/listen = 9000/g' /etc/php/7.4/fpm/pool.d/www.conf
+if [ -f ./wp-config.php ]; then
+    echo "Wp config already made."
+else
+    wp config create --allow-root --dbhost=mariadb --dbname=$DB_NAME --dbuser=$DB_USER --dbpass=$DB_PASSWORD
+    if [ $? -eq 0 ]; then
+        echo "Config file made successfully."
+    else
+        echo "Error making config file!" >&2
+        exit 1
+    fi
 
-exec "$@"
+    wp core install --allow-root --skip-email --url=$DOMAIN_NAME --title=$DB_NAME --admin_user=$DB_ADMIN --admin_password=$DB_ADMIN_PASSWORD --admin_email="skipthis@test.com"
+    wp user create --allow-root $DB_USER "skipthis2@test.com" --user_pass=$DB_PASSWORD
+fi
+
+sed -i "s/listen.*/listen = 9000/g" /etc/php/7.4/fpm/pool.d/www.conf
+
+echo "Wordpress completed successfully."
+
+exec /usr/sbin/php-fpm7.4 -F

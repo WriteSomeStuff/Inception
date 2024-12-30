@@ -13,10 +13,10 @@ RUN openssl req -x509 -nodes \
 	-keyout /etc/nginx/ssl/new.key
 
 COPY ./conf/nginx.conf /etc/nginx/sites-enabled/nginx.conf
-COPY ./tools/index.html /etc/nginx/tools/index.html
+# COPY ./tools/index.html /etc/nginx/tools/index.html
 
-WORKDIR /etc/nginx/tools
+# WORKDIR /etc/nginx/tools
 
-EXPOSE 443
+# EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

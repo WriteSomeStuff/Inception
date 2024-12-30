@@ -22,8 +22,6 @@ services:
     restart: always
     env_file:
       - .env
-    expose:
-      - "9000"
     depends_on:
       - mariadb
     volumes:
@@ -37,8 +35,6 @@ services:
     restart: always
     env_file:
       - .env
-    expose:
-      - "3306"
     volumes:
       - db-volume:/var/lib/mysql
     networks:
@@ -46,4 +42,12 @@ services:
 
 volumes:
   wp-volume:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/inception/wp
   db-volume:
+    driver_opts:
+      type: none
+      o: bind
+      device: ${HOME}/inception/db
