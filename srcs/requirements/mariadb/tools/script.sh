@@ -21,7 +21,7 @@ else
 fi
 
 echo "Stopping MariaDB..."
-mysqladmin -u root --password=$DB_ROOT_PASSWORD shutdown
+service mariadb stop
 
 if [ $? -eq 0 ]; then
     echo "MariaDB stopped successfully."
