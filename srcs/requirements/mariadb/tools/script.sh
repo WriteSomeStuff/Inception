@@ -18,8 +18,6 @@ else
     exit 1
 fi
 
-service mariadb stop
-
 echo "MariaDB completed successfully."
 
 exec mysqld
