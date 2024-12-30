@@ -14,7 +14,7 @@ down:
 
 prune:
 	docker builder prune -f && docker system prune -a -f
-	sudo rm -rf ${HOME}/inception
+#	sudo rm -rf ${HOME}/inception
 
 status:
 	docker compose -f srcs/docker-compose.yml ps
